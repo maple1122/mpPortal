@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<suite name="jixianTest" parallel="false">
+<suite name="mpPortalTest" parallel="false">
 
-    <test name="直播管理测试">
-
+    <test name="媒体号管理">
+<classes>
+    <class name="MediaManageTest"></class>
+</classes>
+    </test>
+    <test name="媒体号分享管理">
+        <classes>
+            <class name="MediaShareTest"></class>
+        </classes>
+    </test>
+    <test name="媒体号内容管理">
+        <classes>
+            <class name="MediaContentTest"></class>
+        </classes>
+    </test>
+    <test name="媒体号拍拍管理">
+        <classes>
+            <class name="PaipaiManageTest"></class>
+        </classes>
+    </test>
+    <test name="媒体号直播管理">
+        <classes>
+            <class name="LiveManageTest"></class>
+        </classes>
     </test>
     <listeners>
         <listener class-name="org.uncommons.reportng.HTMLReporter"/>

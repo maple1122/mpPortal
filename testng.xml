@@ -2,9 +2,9 @@
 <suite name="mpPortalTest" parallel="false">
 
     <test name="媒体号管理">
-<classes>
-    <class name="MediaManageTest"></class>
-</classes>
+        <classes>
+            <class name="MediaManageTest"></class>
+        </classes>
     </test>
     <test name="媒体号分享管理">
         <classes>

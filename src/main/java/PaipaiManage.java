@@ -107,15 +107,15 @@ public class PaipaiManage extends Login {
                     Thread.sleep(500);
                     videos.get(i).findElement(By.xpath("./div[@class='action']/div[@class='btn-group']/span[@class='btn btn-qianfa']")).click();
                     Thread.sleep(1000);
-                    driver.findElement(By.cssSelector("input.layui-input.myKeyword3")).sendKeys("auto");//自动化要签发的频道搜索关键词
-                    driver.findElement(By.cssSelector("button.layui-btn.layui-btn-primary.search3")).click();//点击搜索
-                    Thread.sleep(500);
+//                    driver.findElement(By.cssSelector("input.layui-input.myKeyword3")).sendKeys("auto");//自动化要签发的频道搜索关键词
+//                    driver.findElement(By.cssSelector("button.layui-btn.layui-btn-primary.search3")).click();//点击搜索
+//                    Thread.sleep(500);
 
-                    getTestChannel = CommonMethod.getTestChannel(driver);//选择测试频道
+                    getTestChannel = CommonMethod.getPublishChannel(driver,"测试test");//选择测试频道
                     Thread.sleep(1000);
 
                     if (getTestChannel) {//如果签发成功了
-                        driver.findElement(By.cssSelector("button.ll-btn.btn-yes.fl")).click();//点击确定签发
+//                        driver.findElement(By.cssSelector("button.ll-btn.btn-yes.fl")).click();//点击确定签发
                         System.out.println("~~~ push()，拍拍签发，执行成功。 ~~~");
                         push = true;
                     } else System.out.println("没有找到auto签发频道");
@@ -197,18 +197,18 @@ public class PaipaiManage extends Login {
             driver = login();
             for (int i = 0; i < 3; i++) {
                 if (!CommonMethod.isJudgingElement(driver, By.tagName("header"))) {//校验是否跳转成功
-                    driver.get("http://app.test.pdmiryun.com/mp/paipai/manage");//打开媒体号共享页面
+                    driver.get(domain+"/mp/paipai/manage");//打开媒体号共享页面
                     Thread.sleep(2000);
                 } else break;
             }
 
-            if (!driver.findElement(By.xpath("//div[@class='nav-right']/ul/li/a")).getText().contains("爱富县")) {
+            if (!driver.findElement(By.xpath("//div[@class='nav-right']/ul/li/a")).getText().contains(siteName)) {
                 Actions action = new Actions(driver);
                 action.moveToElement(driver.findElement(By.xpath("//div[@class='nav-right']/ul/li/a"))).perform();//悬浮到站点名，打开站点图层
                 Thread.sleep(500);
-                driver.findElement(By.linkText("爱富县")).click();//选择切换到爱富县
+                driver.findElement(By.linkText(siteName)).click();//选择切换到爱富县
                 Thread.sleep(2000);
-                driver.get("http://app.test.pdmiryun.com/mp/paipai/manage");//再次切换到媒体号共享
+                driver.get(domain+"/mp/paipai/manage");//再次切换到媒体号共享
                 Thread.sleep(2000);
             }
         } catch (InterruptedException e) {

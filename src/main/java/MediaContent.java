@@ -21,7 +21,7 @@ public class MediaContent extends Login {
 
         if (CommonMethod.isJudgingElement(driver, By.xpath("//table[@class='layui-table my-table cms-float-pic']/tbody/tr"))) {//判断是否有数据
             List<WebElement> acticles = driver.findElements(By.xpath("//table[@class='layui-table my-table cms-float-pic']/tbody/tr"));//获取数据列表
-            for (int i = 0; i < acticles.size(); i++) {
+            for (int i = acticles.size()-1; i >0; i--) {
                 if (acticles.get(i).findElement(By.xpath("td[6]")).getText().equals("已发布")) {//判断状态是否是已发布的
                     acticles.get(i).findElement(By.xpath("td[1]/a/i")).click();//选中已发布的稿件
                     Thread.sleep(100);
@@ -83,10 +83,10 @@ public class MediaContent extends Login {
                     Thread.sleep(500);
                     driver.findElement(By.xpath("//div[@class='search-right']/a[@id='push']")).click();//点击选签
                     Thread.sleep(500);
-                    driver.findElement(By.cssSelector("input.layui-input.myKeyword2")).sendKeys("auto");//自动化要签发的频道搜索关键词
-                    driver.findElement(By.cssSelector("button.layui-btn.layui-btn-primary.search2")).click();//点击搜索
-                    Thread.sleep(500);
-                    getTestChannel = CommonMethod.getTestChannel(driver);//选择测试频道
+//                    driver.findElement(By.cssSelector("input.layui-input.myKeyword2")).sendKeys("测试test");//自动化要签发的频道搜索关键词
+//                    driver.findElement(By.cssSelector("button.layui-btn.layui-btn-primary.search2")).click();//点击搜索
+//                    Thread.sleep(500);
+                    getTestChannel = CommonMethod.getPublishChannel(driver,"测试test");//选择测试频道
 
                     if (getTestChannel) break;//已选中签发频道则跳出
                 }
@@ -115,18 +115,18 @@ public class MediaContent extends Login {
             driver = login();
             for (int i = 0; i < 3; i++) {
                 if (!CommonMethod.isJudgingElement(driver, By.tagName("header"))) {//校验是否跳转成功
-                    driver.get("http://app.test.pdmiryun.com/mp/mpContent/contentList");
+                    driver.get(domain+"/mp/mpContent/contentList");
                     Thread.sleep(2000);
                 } else break;
             }
 
-            if (!driver.findElement(By.xpath("//div[@class='nav-right']/ul/li/a")).getText().contains("爱富县")) {
+            if (!driver.findElement(By.xpath("//div[@class='nav-right']/ul/li/a")).getText().contains(siteName)) {
                 Actions action = new Actions(driver);
                 action.moveToElement(driver.findElement(By.xpath("//div[@class='nav-right']/ul/li/a"))).perform();
                 Thread.sleep(500);
-                driver.findElement(By.linkText("爱富县")).click();
+                driver.findElement(By.linkText(siteName)).click();
                 Thread.sleep(2000);
-                driver.get("http://app.test.pdmiryun.com/mp/mpContent/contentList");
+                driver.get(domain+"/mp/mpContent/contentList");
                 Thread.sleep(2000);
             }
         } catch (InterruptedException e) {

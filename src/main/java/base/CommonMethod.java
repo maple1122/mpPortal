@@ -68,34 +68,59 @@ public class CommonMethod {
         Thread.sleep(500);
     }
 
-    //签发到测试频道
-    public static Boolean getTestChannel(WebDriver driver) throws InterruptedException {
-//        driver.findElement(By.cssSelector("input.layui-input.myKeyword2")).sendKeys("auto");//自动化要签发的频道搜索关键词
-//        driver.findElement(By.cssSelector("button.layui-btn.layui-btn-primary.search2")).click();//点击搜索
-//        Thread.sleep(1000);
+//    //签发到测试频道
+//    public static Boolean getTestChannel(WebDriver driver) throws InterruptedException {
+////        driver.findElement(By.cssSelector("input.layui-input.myKeyword2")).sendKeys("auto");//自动化要签发的频道搜索关键词
+////        driver.findElement(By.cssSelector("button.layui-btn.layui-btn-primary.search2")).click();//点击搜索
+////        Thread.sleep(1000);
+//
+//        List<WebElement> channel1, channel2;//两级频道Tree的list（忽略站点名称级）
+//        String testChannelName;//测试频道名称
+//        Boolean hasTestChannel = false;//初始化是否找到测试频道的标识
+//        channel1 = driver.findElements(By.xpath("//div[@id='channelTree']/div/div"));//第一级频道list对象
+//        for (int i = 0; i < channel1.size(); i++) {//遍历一级频道
+//            if (isJudgingElement(channel1.get(i), By.xpath("div"))) {//校验一级频道下是否有二级频道
+//                channel2 = channel1.get(i).findElements(By.xpath("div"));//二级频道list对象
+//                for (int j = 0; j < channel2.size(); j++) {//遍历二级频道
+//                    if (isJudgingElement(channel2.get(j), By.xpath("div/div"))) {//校验二级频道
+//                        testChannelName = channel2.get(j).findElement(By.xpath("div/div")).getText();//获取二级频道名称
+//                        if (testChannelName.contains("auto")) {//校验二级频道名称是否有auto
+//                            hasTestChannel = true;//是auto名称，则更新hasTestChannel为true
+//                            channel2.get(j).findElement(By.xpath("div/i")).click();//选中该二级测试频道
+//                            Thread.sleep(1000);
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//            if (hasTestChannel) break;
+//        }
+//        return hasTestChannel;//返回是否已选择测试频道标识
+//    }
 
-        List<WebElement> channel1, channel2;//两级频道Tree的list（忽略站点名称级）
-        String testChannelName;//测试频道名称
-        Boolean hasTestChannel = false;//初始化是否找到测试频道的标识
-        channel1 = driver.findElements(By.xpath("//div[@id='channelTree']/div/div"));//第一级频道list对象
-        for (int i = 0; i < channel1.size(); i++) {//遍历一级频道
-            if (isJudgingElement(channel1.get(i), By.xpath("div"))) {//校验一级频道下是否有二级频道
-                channel2 = channel1.get(i).findElements(By.xpath("div"));//二级频道list对象
-                for (int j = 0; j < channel2.size(); j++) {//遍历二级频道
-                    if (isJudgingElement(channel2.get(j), By.xpath("div/div"))) {//校验二级频道
-                        testChannelName = channel2.get(j).findElement(By.xpath("div/div")).getText();//获取二级频道名称
-                        if (testChannelName.contains("auto")) {//校验二级频道名称是否有auto
-                            hasTestChannel = true;//是auto名称，则更新hasTestChannel为true
-                            channel2.get(j).findElement(By.xpath("div/i")).click();//选中该二级测试频道
-                            Thread.sleep(1000);
-                            break;
-                        }
-                    }
+    //签发到测试频道
+    public static Boolean getPublishChannel(WebDriver driver, String channelName) throws InterruptedException {
+        Boolean selected = false;
+        driver.findElement(By.cssSelector("input.layui-input.myKeyword2")).sendKeys(channelName);//录入搜索目标签发频道
+        Thread.sleep(200);
+        driver.findElement(By.cssSelector("button.layui-btn.layui-btn-primary.search2")).click();//搜索
+        Thread.sleep(500);
+        List<WebElement> list1, list2;
+        list1 = driver.findElements(By.xpath("//div[@id='channelTree']/div/div"));//一级目录
+        for (int i = 0; i < list1.size(); i++) {
+            list1.get(i).getAttribute("style").contains("block");
+            list2 = list1.get(i).findElements(By.xpath("div"));//二级目录
+            for (int j = 0; j < list2.size(); j++) {
+                if (list2.get(j).getAttribute("style").contains("block")) {
+                    list2.get(j).findElement(By.xpath("div/i")).click();
+                    selected = true;
+                    break;
                 }
             }
-            if (hasTestChannel) break;
+            if (selected) break;
         }
-        return hasTestChannel;//返回是否已选择测试频道标识
+        Thread.sleep(1000);
+        return selected;
     }
 
     //校验元素是否存在

@@ -95,14 +95,16 @@ public class MediaManage extends Login {
                     Thread.sleep(500);
                     driver.findElement(By.cssSelector("a.add-media-btn.hidden")).click();//点击添加媒体号
                     Thread.sleep(500);
-                    driver.findElement(By.xpath("//form[@class='layui-form basicinfo-form']/div/div/input")).sendKeys("autoTest" + Calendar.getInstance().getTimeInMillis());//媒体号名称
-                    driver.findElement(By.xpath("//form[@class='layui-form basicinfo-form']/div[2]/div/input")).sendKeys("autoTest" + Calendar.getInstance().getTimeInMillis());//媒体号编码
+                    Random r = new Random();//创建随机数对象
+                    String phone="189" + (r.nextInt(89999999) + 10000000);
+                    driver.findElement(By.xpath("//form[@class='layui-form basicinfo-form']/div/div/input")).sendKeys("autoTest" + phone);//媒体号名称
+                    driver.findElement(By.xpath("//form[@class='layui-form basicinfo-form']/div[2]/div/input")).sendKeys("autoTest" + phone);//媒体号编码
                     driver.findElement(By.xpath("//form[@class='layui-form basicinfo-form']/div[3]/div/div")).click();//设置为个人类型
                     Thread.sleep(500);
                     driver.findElement(By.xpath("//form[@class='layui-form basicinfo-form']/div[5]/div/input")).sendKeys("autoTest");//真实姓名
                     driver.findElement(By.xpath("//form[@class='layui-form basicinfo-form']/div[6]/div/input")).sendKeys("111111111111111111");//身份证号
-                    Random r = new Random();//创建随机数对象
-                    driver.findElement(By.xpath("//form[@class='layui-form basicinfo-form']/div[7]/div/input")).sendKeys("189" + (r.nextInt(89999999) + 10000000));//设置手机号，189+8位随机数
+
+                    driver.findElement(By.xpath("//form[@class='layui-form basicinfo-form']/div[7]/div/input")).sendKeys(phone);//设置手机号，189+8位随机数
                     Thread.sleep(500);
                     driver.findElement(By.xpath("//div[@class='layui-form-item personClasses']/div/input")).click();//打开分类设置列表
                     Thread.sleep(500);
@@ -168,16 +170,16 @@ public class MediaManage extends Login {
             driver = login();
             for (int i = 0; i < 3; i++) {
                 if (!CommonMethod.isJudgingElement(driver,By.tagName("header"))) {//校验是否跳转成功
-                    driver.get("http://app.test.pdmiryun.com/mp/media/manage");
+                    driver.get(domain+"/mp/media/manage");
                     Thread.sleep(2000);
                 } else break;
             }
 
-            if (!driver.findElement(By.xpath("//div[@class='nav-right']/ul/li/a")).getText().contains("爱富县")) {//校验是否是爱富县
+            if (!driver.findElement(By.xpath("//div[@class='nav-right']/ul/li/a")).getText().contains(siteName)) {//校验是否是爱富县
                 Actions action = new Actions(driver);
                 action.moveToElement(driver.findElement(By.xpath("//div[@class='nav-right']/ul/li/a"))).perform();//悬浮打开机构list
                 Thread.sleep(500);
-                driver.findElement(By.linkText("爱富县")).click();//切换到爱富县
+                driver.findElement(By.linkText(siteName)).click();//切换到爱富县
                 Thread.sleep(3000);
             }
         } catch (InterruptedException e) {
